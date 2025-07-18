@@ -1,0 +1,81 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+      <br> <br>
+    <h3>create a new listing</h3>
+    <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+     <!-- TITLE (example field) -->
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" id="title" type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+  <label for="image" class="form-label">Upload Images</label>
+  <input class="form-control" type="file" id="image" name="listing[image]" accept="image/*" multiple required>
+  <small class="text-muted">You can upload one or more images.</small>
+</div>
+
+      <!-- LOCATION INPUT -->
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input name="listing[location]" placeholder="Goa, India" id="location" type="text" class="form-control" required>
+    </div>
+
+    <!-- COUNTRY INPUT -->
+    <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input name="listing[country]" placeholder="India" id="country" type="text" class="form-control" required>
+    </div>
+
+    <!-- COORDINATES INPUT -->
+    <div class="row mb-3">
+        <div class="col-6">
+            <label for="longitude" class="form-label">Longitude</label>
+            <input name="listing[longitude]" placeholder="73.8267" id="longitude" type="number" step="any" class="form-control" required>
+            <small class="text-muted">Get from Google Maps</small>
+        </div>
+        <div class="col-6">
+            <label for="latitude" class="form-label">Latitude</label>
+            <input name="listing[latitude]" placeholder="15.2993" id="latitude" type="number" step="any" class="form-control" required>
+            <small class="text-muted">Get from Google Maps</small>
+        </div>
+    </div>
+
+    <!-- PRICE (example field) -->
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input name="listing[price]" id="price" type="number" class="form-control" required>
+    </div>
+
+    <!-- DESCRIPTION (example field) -->
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" id="description" class="form-control" required></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-danger">Create Listing</button>
+    </form>
+    <script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const longitude = document.getElementById('longitude').value;
+    const latitude = document.getElementById('latitude').value;
+
+    // Validate inputs
+    if (!longitude || !latitude) {
+        alert("Please enter valid coordinates.");
+        e.preventDefault();
+        return;
+    }
+
+    // Create a hidden input for coordinates in [lng, lat] format
+    const coordinatesInput = document.createElement('input');
+    coordinatesInput.type = 'hidden';
+    coordinatesInput.name = 'listing[geometry][coordinates]'; // match your Mongoose schema
+    coordinatesInput.value = `[${longitude},${latitude}]`;
+
+    this.appendChild(coordinatesInput);
+});
+</script>
+    </div>
+    </div>
